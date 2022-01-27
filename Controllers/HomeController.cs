@@ -12,10 +12,12 @@ namespace Mission_4_Assignment.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private MovieContext _blahContext { get; set; }
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MovieContext someName)
         {
             _logger = logger;
+            _blahContext = someName;
         }
 
         public IActionResult Index()
@@ -23,9 +25,18 @@ namespace Mission_4_Assignment.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Movies()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Movies(MovieResponse ar)
+        {
+            _blahContext.Add(ar);
+            _blahContext.SaveChanges();
+            return View("MovieConfirmation", ar);
         }
 
         public IActionResult MyPodcasts()
